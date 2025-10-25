@@ -9,6 +9,7 @@ import {
   View,
 } from "react-native";
 import { AppInputVariantsProps, appInputVariants } from "./input.variants";
+import { useAppInputViewModel } from "./use-app-input-View-Model";
 
 export interface AppInputProps extends TextInputProps, AppInputVariantsProps {
   label?: string;
@@ -16,6 +17,7 @@ export interface AppInputProps extends TextInputProps, AppInputVariantsProps {
   rightIcon?: keyof typeof Ionicons.glyphMap;
   containerClassName?: string;
   mask?: (value: string) => void | string;
+  error?: string;
 }
 
 export const AppInput: FC<AppInputProps> = ({
@@ -24,23 +26,75 @@ export const AppInput: FC<AppInputProps> = ({
   rightIcon,
   containerClassName,
   mask,
-  className,
+  value,
+  isError,
+  secureTextEntry,
+  onBlur,
+  onFocus,
+  onChangeText,
+  error,
+  isDisabled,
   ...textInputProps
 }) => {
-  const styles = appInputVariants();
+  const {
+    getIconColor,
+    handleWrapperPress,
+    handlePasswordToggle,
+    showPassword,
+    handleFocus,
+    handleBlur,
+    handleTextChange,
+    isFocused,
+  } = useAppInputViewModel({
+    onBlur,
+    onFocus,
+    isError: !!error,
+    mask,
+    onChangeText,
+    isDisabled,
+    secureTextEntry,
+    value,
+  });
+  const styles = appInputVariants({ isFocused, isDisabled, isError: !!error });
 
   return (
     <View className={styles.container({ className: containerClassName })}>
-      <Text className={styles.label()}>Label</Text>
+      <Text className={styles.label()}>{label}</Text>
       <Pressable className={styles.wrapper()}>
-        <Ionicons size={22} name="person" />
+        {leftIcon && (
+          <Ionicons
+            color={getIconColor()}
+            className="mr-3"
+            size={22}
+            name={leftIcon}
+          />
+        )}
 
-        <TextInput className={styles.input()} {...textInputProps} />
+        <TextInput
+          onBlur={handleBlur}
+          onFocus={handleFocus}
+          onChangeText={handleTextChange}
+          value={value}
+          secureTextEntry={showPassword}
+          className={styles.input()}
+          {...textInputProps}
+        />
 
-        <TouchableOpacity>
-          <Ionicons size={22} name="eye-off-outline" />
-        </TouchableOpacity>
+        {secureTextEntry && (
+          <TouchableOpacity activeOpacity={0.7} onPress={handlePasswordToggle}>
+            <Ionicons
+              size={22}
+              name={showPassword ? "eye-outline" : "eye-off-outline"}
+            />
+          </TouchableOpacity>
+        )}
       </Pressable>
+
+      {error && (
+        <Text className={styles.error()}>
+          <Ionicons className="ml-2" name="alert-circle-outline" /> {error}
+        </Text>
+      )}
     </View>
   );
 };
