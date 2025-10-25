@@ -1,9 +1,7 @@
-import { Text, View } from "react-native";
+import { LoginView } from "../view-models/login/login.view";
+import { useLoginViewModel } from "../view-models/login/use-login-view-model";
 
 export default function Login() {
-  return (
-    <View className="flex-1 items-center justify-center">
-      <Text>Login</Text>
-    </View>
-  );
+  const props = useLoginViewModel();
+  return <LoginView {...props} />;
 }
