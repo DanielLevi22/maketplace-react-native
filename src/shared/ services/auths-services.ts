@@ -1,4 +1,5 @@
 import { marketPlaceApiClient } from "../api/market-place";
+import type { LoginHttpParams } from "../interfaces/http/login";
 import {
   RegisterHttpParams,
   RegisterHttpResponse,
@@ -12,3 +13,5 @@ export const register = async (userData: RegisterHttpParams) => {
 
   return data;
 };
+
+export const login = async (userData: LoginHttpParams) => {};

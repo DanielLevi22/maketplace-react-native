@@ -8,6 +8,7 @@ import { useLoginViewModel } from "./use-login-view-model";
 
 export const LoginView: FC<ReturnType<typeof useLoginViewModel>> = ({
   control,
+  onSubmit,
 }) => {
   return (
     <KeyboardContainer>
