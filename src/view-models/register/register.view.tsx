@@ -1,9 +1,10 @@
+import { AppButton } from "@/src/shared/components/app-button";
 import { AppInputController } from "@/src/shared/components/app-input-controller";
 import { AuthFormHeader } from "@/src/shared/components/auth-form-header";
 import { KeyboardContainer } from "@/src/shared/key-board-container";
 import { router } from "expo-router";
 import { FC } from "react";
-import { ScrollView, Text, TouchableOpacity } from "react-native";
+import { ScrollView, Text, View } from "react-native";
 import { useRegisterViewModel } from "./use-register.view-model";
 
 export const RegisterView: FC<ReturnType<typeof useRegisterViewModel>> = ({
@@ -22,6 +23,7 @@ export const RegisterView: FC<ReturnType<typeof useRegisterViewModel>> = ({
           label="NOME"
           control={control}
           name="name"
+          placeholder="Seu nome completo"
         />
 
         <AppInputController
@@ -29,12 +31,17 @@ export const RegisterView: FC<ReturnType<typeof useRegisterViewModel>> = ({
           label="TELEFONE"
           control={control}
           name="phone"
+          placeholder="(00) 00000-0000"
         />
+
+        <Text className="text-base mt-6 font-bold text-gray-500">Acesso</Text>
+
         <AppInputController
           leftIcon="mail-outline"
           label="E-MAIL"
           control={control}
           name="email"
+          placeholder="mail@example.com.br"
         />
 
         <AppInputController
@@ -42,6 +49,7 @@ export const RegisterView: FC<ReturnType<typeof useRegisterViewModel>> = ({
           label="SENHA"
           control={control}
           name="password"
+          placeholder="Sua senha"
           secureTextEntry
         />
 
@@ -50,16 +58,22 @@ export const RegisterView: FC<ReturnType<typeof useRegisterViewModel>> = ({
           label="CONFIRMAR SENHA"
           control={control}
           name="confirmPassword"
+          placeholder="Confirme sua senha"
           secureTextEntry
         />
 
-        <TouchableOpacity onPress={onSubmit}>
-          <Text>Registrar</Text>
-        </TouchableOpacity>
+        <AppButton className="mt-6" onPress={onSubmit}>
+          Registrar
+        </AppButton>
 
-        <TouchableOpacity onPress={() => router.push("/login")}>
-          <Text>Login</Text>
-        </TouchableOpacity>
+        <View className="mt-16">
+          <Text className="text-base mb-6 text-gray-300">
+            Já tem uma conta?
+          </Text>
+          <AppButton variant="outlined" onPress={() => router.push("/login")}>
+            Login
+          </AppButton>
+        </View>
       </ScrollView>
     </KeyboardContainer>
   );
