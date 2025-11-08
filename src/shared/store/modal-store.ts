@@ -1,17 +1,18 @@
-import type { ReactNode } from "react";
+import { ReactNode } from "react";
 import { create } from "zustand";
 
 interface ModalConfig {
-  animationType?: "none" | "slid" | "fade";
+  animationType?: "none" | "slide" | "fade";
   transparent?: boolean;
-  startBarTranslucent?: boolean;
+  statusBarTranslucent?: boolean;
 }
 
 interface ModalStore {
   isOpen: boolean;
   content: ReactNode | null;
   config: ModalConfig;
-  open: (content: ReactNode, config: ModalConfig) => void;
+  open: (content: ReactNode, config?: ModalConfig) => void;
+  close: () => void;
 }
 
 export const useModalStore = create<ModalStore>((set, get) => ({
@@ -20,13 +21,16 @@ export const useModalStore = create<ModalStore>((set, get) => ({
   config: {
     animationType: "fade",
     transparent: true,
-    startBarTranslucent: false,
+    statusBarTranslucent: false,
   },
-  open: (content: ReactNode, config: ModalConfig) =>
-    set({ content, config: { ...get().config, ...config } }),
-  close: () =>
+  open: (content: ReactNode, config?: ModalConfig) =>
     set({
-      content: null,
-      isOpen: false,
+      isOpen: true,
+      content,
+      config: {
+        ...get().config,
+        ...config,
+      },
     }),
+  close: () => set({ content: null, isOpen: false }),
 }));

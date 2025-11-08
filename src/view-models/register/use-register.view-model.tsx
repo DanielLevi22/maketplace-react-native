@@ -1,3 +1,4 @@
+import { useAppModal } from "@/src/shared/hooks/use-app-modal";
 import { useRegisterMutation } from "@/src/shared/queries/auth/use-register.mutation";
 import { useUserStore } from "@/src/shared/store/use-store";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -6,6 +7,29 @@ import { registerScheme, type RegisterFormData } from "./resgister.scheme";
 export const useRegisterViewModel = () => {
   const userRegisterMutation = useRegisterMutation();
   const { setSession } = useUserStore();
+  const modal = useAppModal();
+
+  const handleSelectAvatar = () => {
+    modal.showSelection({
+      title: "Selecionar foto",
+      message: "Escolha uma opção:",
+      options: [
+        {
+          text: "Galeria",
+          icon: "images",
+          variant: "primary",
+          onPress: () => alert("Galeria"),
+        },
+        {
+          text: "Câmera",
+          icon: "camera",
+          variant: "primary",
+          onPress: () => alert("Câmera"),
+        },
+      ],
+    });
+  };
+
   const {
     control,
     handleSubmit,
@@ -35,5 +59,6 @@ export const useRegisterViewModel = () => {
     control,
     errors,
     onSubmit,
+    handleSelectAvatar,
   };
 };

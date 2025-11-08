@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
+import { AppModal } from "../shared/components/app-modal";
 import "../styles/global.css";
 
 const queryClint = new QueryClient();
@@ -15,6 +16,7 @@ export default function RootLayout() {
         <Stack.Screen name="register" />
         <Stack.Screen name="(private)" />
       </Stack>
+      <AppModal />
     </QueryClientProvider>
   );
 }
