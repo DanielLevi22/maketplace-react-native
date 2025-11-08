@@ -1,4 +1,6 @@
 import { useAppModal } from "@/src/shared/hooks/use-app-modal";
+import { useCamera } from "@/src/shared/hooks/use-camera";
+import { useGallery } from "@/src/shared/hooks/use-gallery";
 import { useRegisterMutation } from "@/src/shared/queries/auth/use-register.mutation";
 import { useUserStore } from "@/src/shared/store/use-store";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,6 +11,8 @@ export const useRegisterViewModel = () => {
   const { setSession } = useUserStore();
   const modal = useAppModal();
 
+  const { openCamera } = useCamera({});
+  const { openGallery } = useGallery({});
   const handleSelectAvatar = () => {
     modal.showSelection({
       title: "Selecionar foto",
@@ -18,13 +22,13 @@ export const useRegisterViewModel = () => {
           text: "Galeria",
           icon: "images",
           variant: "primary",
-          onPress: () => alert("Galeria"),
+          onPress: openGallery,
         },
         {
           text: "Câmera",
           icon: "camera",
           variant: "primary",
-          onPress: () => alert("Câmera"),
+          onPress: openCamera,
         },
       ],
     });
