@@ -1,37 +1,23 @@
-import { useAppModal } from "@/src/shared/hooks/use-app-modal";
-import { useCamera } from "@/src/shared/hooks/use-camera";
-import { useGallery } from "@/src/shared/hooks/use-gallery";
+import { useImage } from "@/src/shared/hooks/use-image";
 import { useRegisterMutation } from "@/src/shared/queries/auth/use-register.mutation";
 import { useUserStore } from "@/src/shared/store/use-store";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { CameraType } from "expo-image-picker";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { registerScheme, type RegisterFormData } from "./resgister.scheme";
 export const useRegisterViewModel = () => {
   const userRegisterMutation = useRegisterMutation();
   const { setSession } = useUserStore();
-  const modal = useAppModal();
+  const [avatarUri, setAvatarUri] = useState<string | null>(null);
 
-  const { openCamera } = useCamera({});
-  const { openGallery } = useGallery({});
-  const handleSelectAvatar = () => {
-    modal.showSelection({
-      title: "Selecionar foto",
-      message: "Escolha uma opção:",
-      options: [
-        {
-          text: "Galeria",
-          icon: "images",
-          variant: "primary",
-          onPress: openGallery,
-        },
-        {
-          text: "Câmera",
-          icon: "camera",
-          variant: "primary",
-          onPress: openCamera,
-        },
-      ],
-    });
+  const { handleSelectImage, isLoading } = useImage({
+    callback: setAvatarUri,
+    cameraType: CameraType.front,
+  });
+
+  const handleSelectAvatar = async () => {
+    await handleSelectImage();
   };
 
   const {
@@ -64,5 +50,6 @@ export const useRegisterViewModel = () => {
     errors,
     onSubmit,
     handleSelectAvatar,
+    avatarUri,
   };
 };
