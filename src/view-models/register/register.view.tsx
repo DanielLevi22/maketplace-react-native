@@ -22,13 +22,13 @@ export const RegisterView: FC<ReturnType<typeof useRegisterViewModel>> = ({
           subtitle="Informe seus dados pessoais e de acesso"
         />
         <TouchableOpacity
+          className="w-[120px] h-[120px] rounded-xl items-center justify-center bg-shape self-center mb-8"
           onPress={handleSelectAvatar}
-          className="size-[120px] rounded-xl justify-center bg-shape self-center mb-8"
         >
           {avatarUri ? (
             <Image
               source={{ uri: avatarUri }}
-              className=" size-full rounded-xl"
+              className="w-full h-full rounded-xl"
               resizeMode="cover"
             />
           ) : (
